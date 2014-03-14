@@ -1,0 +1,1 @@
+/* Full Page vertical Slideshow javascript */
