@@ -1,1 +1,18 @@
 /* Full Page Vertical Slideshow code */
+body, html{
+	width: 100%;
+	height: 100%;
+}
+.fpvs-wrapper{
+	width: 100%;
+	height: 100%;
+	background-color: yellow;
+	display: block;
+}
+.fpvs-wrapper .fpvs-slide{
+	width: 100%;
+	height: 100%;
+}
+.fpvs-wrapper .fpvs-slide h2{
+	margin-top:0;
+}
