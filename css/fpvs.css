@@ -6,13 +6,24 @@ body, html{
 .fpvs-wrapper{
 	width: 100%;
 	height: 100%;
-	background-color: yellow;
 	display: block;
+	position: relative;
 }
 .fpvs-wrapper .fpvs-slide{
 	width: 100%;
 	height: 100%;
+	position: absolute;
+	background-color: white;
 }
 .fpvs-wrapper .fpvs-slide h2{
 	margin-top:0;
+}
+#fpvs-slide-1{
+	z-index: 10;
+}
+#fpvs-slide-2{
+	z-index: 9;
+}
+#fpvs-slide-3{
+	z-index: 8;
 }
