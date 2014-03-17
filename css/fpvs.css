@@ -5,9 +5,13 @@ body, html{
 }
 .fpvs-wrapper{
 	width: 100%;
-	height: 100%;
+	height: 0;
 	display: block;
 	position: relative;
+	-webkit-transition:height 0.9s ease-in-out;
+	-moz-transition:height 0.9s ease-in-out;
+	 -o-transition:height 0.9s ease-in-out;
+	    transition:height 0.9s ease-in-out;
 }
 .fpvs-slide {
 	position: absolute;
@@ -45,6 +49,6 @@ body, html{
 	z-index: 5;
 	background-color: black;
 }
-.active.fpvs-slide {
+.active.fpvs-wrapper, .active.fpvs-slide {
 	height: 100%;
 }

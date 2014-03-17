@@ -4,6 +4,7 @@
 var delta = 0;
 var currentSlideIndex = 0;
 var scrollThreshold = 5;
+var slidesWrapper = $(".fpvs-wrapper");
 var slides = $(".fpvs-slide");
 var numSlides = slides.length - 1;
 var isScrolling = 0;
@@ -27,7 +28,6 @@ function elementScroll (e) {
 		// --- Scrolling down ---
 		else {
 
-			console.log('a');
 			delta++;
 
 			if (delta >= scrollThreshold) {
@@ -60,10 +60,24 @@ function showSlide() {
 
 }
 
+function hideSlides() {
+
+	isScrolling = 1; // we are scrolling already
+
+	slidesWrapper.toggleClass('active');
+
+	setTimeout(function(){ // prevent scrolling for the duration of 2 * animation transition (in css file) (because one animation for current and one for next)
+		isScrolling = 0;
+	}, 900);
+
+}
+
 
 function prevSlide() {
 
 	currentSlideIndex--;
+
+	console.log(currentSlideIndex + '/' + numSlides);
 
 	if (currentSlideIndex < 0) {
 		currentSlideIndex = 0;
@@ -76,13 +90,22 @@ function nextSlide() {
 
 	currentSlideIndex++;
 
+	console.log(currentSlideIndex + '/' + numSlides);
+	
+	// if (currentSlideIndex > numSlides) { 
+	// 	currentSlideIndex = numSlides;
+	// }
+	
 	if (currentSlideIndex > numSlides) { 
-		currentSlideIndex = numSlides;
+		hideSlides();
 	}
-
-	showSlide();
+	else{
+		showSlide();
+	}
+	
 }
-$(window).on({
+
+slidesWrapper.on({
 	'DOMMouseScroll mousewheel': elementScroll
 });
 
