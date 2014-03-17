@@ -5,13 +5,16 @@ body, html{
 }
 .fpvs-wrapper{
 	width: 100%;
-	height: 0;
+	height: 100%;
 	display: block;
-	position: relative;
-	-webkit-transition:height 0.9s ease-in-out;
-	-moz-transition:height 0.9s ease-in-out;
-	 -o-transition:height 0.9s ease-in-out;
-	    transition:height 0.9s ease-in-out;
+	position:absolute;
+	/*-webkit-transition:all 0.9s ease-in-out;
+	-moz-transition:all 0.9s ease-in-out;
+	 -o-transition:all 0.9s ease-in-out;
+	    t*/ransition:all 0.9s ease-in-out;
+}
+.fpvs-wrapper.out-of-sight{
+	top: -100%;
 }
 .fpvs-slide {
 	position: absolute;
@@ -20,10 +23,10 @@ body, html{
 	height: 0;							
 	width: 100%;
 	overflow: hidden;
-	-webkit-transition:height 0.9s ease-in-out;
+	/*-webkit-transition:height 0.9s ease-in-out;
 	-moz-transition:height 0.9s ease-in-out;
 	 -o-transition:height 0.9s ease-in-out;
-	    transition:height 0.9s ease-in-out;
+	    transit*/ion:height 0.9s ease-in-out;
 }
 .fpvs-slide:nth-child(1){
 	z-index: 10;
@@ -49,6 +52,6 @@ body, html{
 	z-index: 5;
 	background-color: black;
 }
-.active.fpvs-wrapper, .active.fpvs-slide {
+.active.fpvs-slide {
 	height: 100%;
 }

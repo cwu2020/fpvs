@@ -1,5 +1,9 @@
 /* Full Page vertical Slideshow javascript */
 
+$(document).ready(function(){
+    $(this).scrollTop(0); // makes sure user starts at beginning on reload
+});
+
 // desktop
 var delta = 0;
 var currentSlideIndex = 0;
@@ -60,11 +64,23 @@ function showSlide() {
 
 }
 
-function hideSlides() {
+function hideWrapper() {
 
 	isScrolling = 1; // we are scrolling already
 
-	slidesWrapper.toggleClass('active');
+	slidesWrapper.toggleClass('out-of-sight');
+
+	setTimeout(function(){ // prevent scrolling for the duration of 2 * animation transition (in css file) (because one animation for current and one for next)
+		isScrolling = 0;
+	}, 900);
+
+}
+
+function showWrapper() {
+
+	isScrolling = 1; // we are scrolling already
+
+	slidesWrapper.toggleClass('out-of-sight');
 
 	setTimeout(function(){ // prevent scrolling for the duration of 2 * animation transition (in css file) (because one animation for current and one for next)
 		isScrolling = 0;
@@ -97,7 +113,8 @@ function nextSlide() {
 	// }
 	
 	if (currentSlideIndex > numSlides) { 
-		hideSlides();
+		currentSlideIndex = numSlides;
+		hideWrapper();
 	}
 	else{
 		showSlide();
@@ -107,6 +124,45 @@ function nextSlide() {
 
 slidesWrapper.on({
 	'DOMMouseScroll mousewheel': elementScroll
+});
+
+$(function(){
+    //This variable is used to prevent event flooding
+    var preventRefire = false;
+
+    //Bind all possible events
+    $(document).bind("DOMMouseScroll mousewheel scroll keyup", function(event){
+        //If an event was fired recently, return
+        if(preventRefire) return;
+
+        if(event.type == "keyup"){
+            //If key is not up arrow or page up, return
+            if(event.which != 38 && event.which != 33) return;
+
+            //If an input field is focused, don't fire, return
+            if($('input:focus,textarea:focus').length != 0) return;
+        }
+
+        if(event.type == "mousewheel" || event.type == "DOMMouseScroll"){
+            //Guess scroll direction
+            var deltaY = 0;
+            if(event.wheelDelta) deltaY = event.wheelDelta;
+            if(event.detail) deltaY = -event.detail;
+
+            //If user mousewheeled down, don't fire, return
+            if(deltaY <= 0) return;
+        }
+
+        //Finally, are we at the top?
+        if($(document).scrollTop() == 0){
+            //Prevent event to refire within 2 seconds
+            preventRefire = true;
+            setTimeout(function(){ preventRefire = false; }, 2000);
+
+            //This is where you do your stuff
+            showWrapper();
+        }
+    });
 });
 
 // mobile
