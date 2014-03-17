@@ -17,17 +17,17 @@ var isScrolling = 0;
 var preventRefire = false;
 
 function elementScroll (e) {	
-
+	
+	// e.stopPropagation();
+	// e.preventDefault();
+    
     if(preventRefire) return false;
-	// elementScroll.stopPropagation();
-	// elementScroll.preventDefault();
 
 	// --- Scrolling up ---
 	if (e.originalEvent.detail < 0 || e.originalEvent.wheelDelta > 0) {	
 
 		delta--;
 
-		console.log('a');
 		if ( Math.abs(delta) >= scrollThreshold) {
 			prevSlide();
 		}
@@ -70,7 +70,7 @@ function prevSlide() {
 
 	currentSlideIndex--;
 
-	console.log(currentSlideIndex + '/' + numSlides);
+	// console.log(currentSlideIndex + '/' + numSlides);
 
 	if (currentSlideIndex < 0) {
 		currentSlideIndex = 0;
@@ -83,17 +83,17 @@ function nextSlide() {
 
 	currentSlideIndex++;
 
-	console.log(currentSlideIndex + '/' + numSlides);
-	
-	if (currentSlideIndex > numSlides) { 
-		currentSlideIndex = numSlides;
-	}
-	showSlide();
+	// console.log(currentSlideIndex + '/' + numSlides);
 	
 	// if (currentSlideIndex > numSlides) { 
 	// 	currentSlideIndex = numSlides;
-	// 	hideWrapper();
 	// }
+	
+	if (currentSlideIndex > numSlides) { 
+		currentSlideIndex = numSlides;
+		leaveFpvs();
+	}
+	showSlide();
 	// else{
 	// 	showSlide();
 	// }
@@ -105,18 +105,24 @@ slidesWrapper.on({
 });
 
 
+function leaveFpvs() {
 
-// function hideWrapper() {
+	preventRefire = true;
+	
+	slidesWrapper.toggleClass('out-of-sight'); // we are scrolling already
 
-// 	isScrolling = 1; // we are scrolling already
+	setTimeout(function(){ // prevent scrolling for the duration of 2 * animation transition (in css file) (because one animation for current and one for next)
+		preventRefire = false;
+		hideSlides();
+	}, 1800);
 
-// 	slidesWrapper.toggleClass('out-of-sight');
+}
 
-// 	setTimeout(function(){ // prevent scrolling for the duration of 2 * animation transition (in css file) (because one animation for current and one for next)
-// 		isScrolling = 0;
-// 	}, 900);
+function hideSlides() {
 
-// }
+	$('body').toggleClass('fpvs-done');
+
+}
 
 // function showWrapper() {
 
