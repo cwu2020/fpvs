@@ -18,12 +18,14 @@ body, html{
 .fpvs-wrapper .fpvs-slide h2{
 	margin-top:0;
 }
-#fpvs-slide-1{
+.fpvs-slide:nth-child(1){
 	z-index: 10;
+	background-color: yellow;
 }
-#fpvs-slide-2{
+.fpvs-slide:nth-child(2){
 	z-index: 9;
+	background-color: green;
 }
-#fpvs-slide-3{
+.fpvs-slide:nth-child(3){
 	z-index: 8;
 }
