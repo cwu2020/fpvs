@@ -3,34 +3,42 @@
 // desktop
 var delta = 0;
 var currentSlideIndex = 0;
-var scrollThreshold = 100;
+var scrollThreshold = 5;
 var slides = $(".fpvs-slide");
 var numSlides = slides.length - 1;
+var isScrolling = 0;
 
 function elementScroll (e) {
 
-	e.stopPropagation();
+	if(isScrolling == 0){ // if the user is not already scrolling
 
-	// --- Scrolling up ---
-	if (e.originalEvent.detail < 0 || e.originalEvent.wheelDelta > 0) {	
+		// elementScroll.stopPropagation();
+		// elementScroll.preventDefault();
 
-		delta--;
-		if ( Math.abs(delta) >= scrollThreshold) {
-			prevSlide();
+		// --- Scrolling up ---
+		if (e.originalEvent.detail < 0 || e.originalEvent.wheelDelta > 0) {	
+
+			delta--;
+			if ( Math.abs(delta) >= scrollThreshold) {
+				prevSlide();
+			}
 		}
-	}
 
-	// --- Scrolling down ---
-	else {
-		console.log('a');
-		delta++;
+		// --- Scrolling down ---
+		else {
 
-		if (delta >= scrollThreshold) {
-			nextSlide();
+			console.log('a');
+			delta++;
+
+			if (delta >= scrollThreshold) {
+				nextSlide();
+			}
 		}
-	}
 
-	// Prevent page from scrolling
+		// Prevent page from scrolling
+		return false;
+
+	}
 	return false;
 }
 
@@ -39,10 +47,16 @@ function showSlide() {
 
 	// reset
 	delta = 0;
+	//
+	isScrolling = 1; // we are scrolling already
 
 	slides.each(function(i, slide) {
 		$(slide).toggleClass('active', (i >= currentSlideIndex));
 	});
+
+	setTimeout(function(){ // prevent scrolling for the duration of 2 * animation transition (in css file) (because one animation for current and one for next)
+		isScrolling = 0;
+	}, 1800);
 
 }
 
@@ -74,86 +88,86 @@ $(window).on({
 
 // mobile
 
-var dragThreshold = 0.15;// "percentage" to drag before engaging
-var dragStart = null;	 // used to determine touch / drag distance
-var percentage = 0;
-var target;
-var previousTarget;
+// var dragThreshold = 0.15;// "percentage" to drag before engaging
+// var dragStart = null;	 // used to determine touch / drag distance
+// var percentage = 0;
+// var target;
+// var previousTarget;
 
-function touchStart(event) {
+// function touchStart(event) {
 
-	if (dragStart !== null) { return; }
-	if (event.originalEvent.touches) { 
-		event = event.originalEvent.touches[0];
-	}
+// 	if (dragStart !== null) { return; }
+// 	if (event.originalEvent.touches) { 
+// 		event = event.originalEvent.touches[0];
+// 	}
 
-	// where in the viewport was touched
-	dragStart = event.clientY;
+// 	// where in the viewport was touched
+// 	dragStart = event.clientY;
 
-	// make sure we're dealing with a slide
-	target = slides.eq(currentSlideIndex)[0];	
+// 	// make sure we're dealing with a slide
+// 	target = slides.eq(currentSlideIndex)[0];	
 
-	// disable transitions while dragging
-	target.classList.add('no-animation');
+// 	// disable transitions while dragging
+// 	target.classList.add('no-animation');
 
-	previousTarget = slides.eq(currentSlideIndex-1)[0];
-	previousTarget.classList.add('no-animation');
-}
+// 	previousTarget = slides.eq(currentSlideIndex-1)[0];
+// 	previousTarget.classList.add('no-animation');
+// }
 
-function touchMove (event) {
+// function touchMove (event) {
 
-	if (dragStart === null) { return; }
+// 	if (dragStart === null) { return; }
 
-	if (event.originalEvent.touches) { 
-		event = event.originalEvent.touches[0];
-	}
+// 	if (event.originalEvent.touches) { 
+// 		event = event.originalEvent.touches[0];
+// 	}
 
-	delta = dragStart - event.clientY;
-	percentage = delta / $(window).height();
-	// alert(percentage);
+// 	delta = dragStart - event.clientY;
+// 	percentage = delta / $(window).height();
+// 	// alert(percentage);
 
-	// Going down/next. Animate the height of the target element.
-	if (percentage > 0) {
-		target.style.height = (100-(percentage*100))+'%';
-		if (previousTarget) { 
-			previousTarget.style.height = ''; 	// reset
-		}
-	}
+// 	// Going down/next. Animate the height of the target element.
+// 	if (percentage > 0) {
+// 		target.style.height = (100-(percentage*100))+'%';
+// 		if (previousTarget) { 
+// 			previousTarget.style.height = ''; 	// reset
+// 		}
+// 	}
 
-	// Going up/prev. Animate the height of the _previous_ element.
-	else if (previousTarget) {
-		previousTarget.style.height = (-percentage*100)+'%';
-		target.style.height = '';	// reset
-	}
+// 	// Going up/prev. Animate the height of the _previous_ element.
+// 	else if (previousTarget) {
+// 		previousTarget.style.height = (-percentage*100)+'%';
+// 		target.style.height = '';	// reset
+// 	}
 
-	// Don't drag element. This is important.
-	return false;
-}
+// 	// Don't drag element. This is important.
+// 	return false;
+// }
 
-function touchEnd () {
+// function touchEnd () {
 
-	dragStart = null;
-	target.classList.remove('no-animation');
-	if (previousTarget) { 
-		previousTarget.classList.remove('no-animation'); 
-	}
+// 	dragStart = null;
+// 	target.classList.remove('no-animation');
+// 	if (previousTarget) { 
+// 		previousTarget.classList.remove('no-animation'); 
+// 	}
 
-	if (percentage >= dragThreshold) {
-		nextSlide();
-	}
-	else if ( Math.abs(percentage) >= dragThreshold ) {
-		prevSlide();
-	} else {
-		// show current slide i.e. snap back
-		showSlide();
-	}
+// 	if (percentage >= dragThreshold) {
+// 		nextSlide();
+// 	}
+// 	else if ( Math.abs(percentage) >= dragThreshold ) {
+// 		prevSlide();
+// 	} else {
+// 		// show current slide i.e. snap back
+// 		showSlide();
+// 	}
 
-	percentage = 0;
+// 	percentage = 0;
 
-}
+// }
 
-$("#projects").on({
-	'touchstart': touchStart,
-	'touchmove': touchMove,
-	'touchend': touchEnd
-});
+// $("#projects").on({
+// 	'touchstart': touchStart,
+// 	'touchmove': touchMove,
+// 	'touchend': touchEnd
+// });

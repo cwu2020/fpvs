@@ -15,6 +15,7 @@ body, html{
 	left:0;
 	height: 0;							
 	width: 100%;
+	overflow: hidden;
 	-webkit-transition:height 0.9s ease-in-out;
 	-moz-transition:height 0.9s ease-in-out;
 	 -o-transition:height 0.9s ease-in-out;
@@ -44,10 +45,6 @@ body, html{
 	z-index: 5;
 	background-color: black;
 }
-.fpvs-wrapper .fpvs-slide h2{
-	margin-top:0;
-}
-
 .active.fpvs-slide {
 	height: 100%;
 }
